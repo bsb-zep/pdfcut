@@ -1,4 +1,4 @@
-import csv
+﻿import csv
 import io
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from tkinter import filedialog
@@ -13,14 +13,15 @@ def applycsv(firstpage, lastpage, sourcepdf, destinationpdfprefix, outputTargetD
     print('  Ziel: ' + outputTargetUri)
     try:
         outputStream = io.FileIO(outputTargetUri, "wb")
-    output.write(outputStream)
-    outputStream.close()
+        output.write(outputStream)
+        outputStream.close()
     except:
         raise RuntimeError
+    print('\n')
 
 csvlist = list()
 
-print("")
+print('\n')
 newcsvfilepath = filedialog.askopenfilename(title = "Quell-Datei für Seitenangaben auswählen", filetypes = (('CSV-Dateien', '.csv'), ))
 csvfilename = newcsvfilepath
 with open(csvfilename, newline='') as f:
@@ -31,6 +32,7 @@ with open(csvfilename, newline='') as f:
 csvlistlength = len(csvlist)
 print("- Es wurden " + str(csvlistlength) + " Datensätze ausgelesen")
 
+print('\n')
 outputTargetDir = filedialog.askdirectory(initialdir="/",title='Bitte Zielverzeichnis für erstellte PDFs wählen')
 print('Speichere PDFs nach: ' +  str(outputTargetDir) )
 
@@ -39,7 +41,7 @@ for i in range(csvlistlength):
     if int(csvlist[i][0]) > int(csvlist[i][1]):
         print("- Fehler im Seitenbereich: " + str(csvlist[i]))
 print("- Prüfung der Seitenbereichsdaten beendet.")
-print("")
+print('\n')
 
 singlepagepdf = 0
 for i in range(csvlistlength):
@@ -49,7 +51,7 @@ print("- Prüfangaben für das Inhaltsverzeichnis:")
 print("  Anzahl Elemente: " + str(csvlistlength))
 print("  Einzelseiten-Elemente: " + str(singlepagepdf))
 
-print("")
+print('\n')
 csvdecision = input("- PDF-Dateien generieren? (j/n)")
 if csvdecision == str("j"):
     while True:
@@ -62,7 +64,7 @@ if csvdecision == str("j"):
             break
         except FileNotFoundError:
             print("  Quelldatei unter angegebenem Namen nicht gefunden.")
-    print("")
+    print('\n')
     partdestinationname = str(input("  Präfix der Zieldateien ohne Endung: ") + "-")
     csvdecision = input("- Fortfahren? (j/n)")
 if csvdecision == str("j"):
@@ -72,6 +74,7 @@ if csvdecision == str("j"):
         applycounter += 1
         applycsv(int(csvlist[i][0]), int(csvlist[i][1]), completefilename, partdestinationname, outputTargetDir)
         print("  Verarbeitung abgeschlossen.")
+    print('\n')
     print("PDF-Segmente abgelegt nach " + outputTargetDir + " mit dem Präfix " + partdestinationname + ".")
 else:
     exit()
