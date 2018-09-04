@@ -1,17 +1,22 @@
-﻿import csv
+import csv
 import io
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from tkinter import filedialog
 
-def applycsv(firstpage, lastpage, sourcepdf, destinationpdfprefix):
+def applycsv(firstpage, lastpage, sourcepdf, destinationpdfprefix, outputTargetDir):
     output = PdfFileWriter()
     firstpage -= 1
     input = PdfFileReader(open(sourcepdf, "rb"))
     for i in range(firstpage, lastpage):
         output.addPage(input.getPage(i))
-    outputStream = io.FileIO("H:/OJSziel/" + destinationpdfprefix + str(applycounter) + ".pdf", "wb")
+    outputTargetUri = outputTargetDir + '/' + destinationpdfprefix + str(applycounter) + ".pdf"
+    print('  Ziel: ' + outputTargetUri)
+    try:
+        outputStream = io.FileIO(outputTargetUri, "wb")
     output.write(outputStream)
     outputStream.close()
+    except:
+        raise RuntimeError
 
 csvlist = list()
 
@@ -26,7 +31,10 @@ with open(csvfilename, newline='') as f:
 csvlistlength = len(csvlist)
 print("- Es wurden " + str(csvlistlength) + " Datensätze ausgelesen")
 
-print("")
+outputTargetDir = filedialog.askdirectory(initialdir="/",title='Bitte Zielverzeichnis für erstellte PDFs wählen')
+print('Speichere PDFs nach: ' +  str(outputTargetDir) )
+
+print('\n')
 for i in range(csvlistlength):
     if int(csvlist[i][0]) > int(csvlist[i][1]):
         print("- Fehler im Seitenbereich: " + str(csvlist[i]))
@@ -62,9 +70,8 @@ if csvdecision == str("j"):
     for i in range(csvlistlength):
         print("  Verarbeite Seitenabschnitt " + str(1+i) + " von " + str(csvlistlength) + "...")
         applycounter += 1
-        applycsv(int(csvlist[i][0]), int(csvlist[i][1]), completefilename, partdestinationname)
+        applycsv(int(csvlist[i][0]), int(csvlist[i][1]), completefilename, partdestinationname, outputTargetDir)
         print("  Verarbeitung abgeschlossen.")
-    print("")
-    print("PDF-Segmente abgelegt nach H:/OJSziel/ mit dem Präfix " + partdestinationname + ".")
+    print("PDF-Segmente abgelegt nach " + outputTargetDir + " mit dem Präfix " + partdestinationname + ".")
 else:
     exit()
