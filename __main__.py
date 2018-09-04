@@ -1,3 +1,6 @@
+import sys
+import os
+
 print('\n')
 print('pdfcut v3.1 - record and apply granular page numbers')
 print('----------------------------------------------------\n')
