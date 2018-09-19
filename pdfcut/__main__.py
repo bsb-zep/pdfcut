@@ -1,16 +1,12 @@
-import sys
-import os
-
 print('\n')
-print('pdfcut v3.1 - record and apply granular page numbers')
-print('----------------------------------------------------\n')
+print('pdfcut v3.1 - record and apply granular pdf page numbers')
+print('--------------------------------------------------------\n')
 
 print('Bitte Workflow auswählen:')
 print('  1 - Erfassung von Seitenzahlen')
 print('  2 - Granulare PDFs anhand erfasster Seitenzahlen erstellen\n')
 
-stepChoice = input("Workflow: ")
-print('\n\n\n')
+stepChoice = input("Workflow: \n\n")
 
 if str(stepChoice) == '1':
     __import__('step1')
